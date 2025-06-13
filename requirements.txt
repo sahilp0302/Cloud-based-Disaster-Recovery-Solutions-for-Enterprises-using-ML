@@ -1,0 +1,9 @@
+kagglehub
+pandas
+matplotlib
+seaborn
+openpyxl
+streamlit
+scikit-learn
+fpdf
+smote

@@ -1,0 +1,35 @@
+🔍 First 5 rows:
+              Timestamp      SourceIP DestinationIP                     DnsQuery         DnsAnswer DnsAnswerTTL                DnsQueryNames DnsQueryClass DnsQueryType  NumberOfAnswers  DnsResponseCode  DnsOpCode         SensorId  sus  evil
+0  2021-05-16T17:13:14Z   10.100.1.95    10.100.0.2  ssm.us-east-2.amazonaws.com               NaN          NaN  ssm.us-east-2.amazonaws.com        ['IN']        ['A']                0                0          0   ip-10-100-1-95    0     0
+1  2021-05-16T17:13:14Z    10.100.0.2   10.100.1.95  ssm.us-east-2.amazonaws.com  ['52.95.19.240']       ['17']  ssm.us-east-2.amazonaws.com        ['IN']        ['A']                1                0          0   ip-10-100-1-95    0     0
+2  2021-05-16T17:13:14Z   10.100.1.95    10.100.0.2  ssm.us-east-2.amazonaws.com               NaN          NaN  ssm.us-east-2.amazonaws.com        ['IN']     ['AAAA']                0                0          0   ip-10-100-1-95    0     0
+3  2021-05-16T17:13:14Z    10.100.0.2   10.100.1.95  ssm.us-east-2.amazonaws.com               NaN          NaN  ssm.us-east-2.amazonaws.com        ['IN']     ['AAAA']                0                0          0   ip-10-100-1-95    0     0
+4  2021-05-16T17:13:16Z  10.100.1.186    10.100.0.2  ssm.us-east-2.amazonaws.com               NaN          NaN  ssm.us-east-2.amazonaws.com        ['IN']        ['A']                0                0          0  ip-10-100-1-186    0     0
+
+🧠 Dataset Info:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 269 entries, 0 to 268
+Data columns (total 15 columns):
+ #   Column           Non-Null Count  Dtype 
+---  ------           --------------  ----- 
+ 0   Timestamp        269 non-null    object
+ 1   SourceIP         269 non-null    object
+ 2   DestinationIP    269 non-null    object
+ 3   DnsQuery         269 non-null    object
+ 4   DnsAnswer        65 non-null     object
+ 5   DnsAnswerTTL     65 non-null     object
+ 6   DnsQueryNames    269 non-null    object
+ 7   DnsQueryClass    269 non-null    object
+ 8   DnsQueryType     269 non-null    object
+ 9   NumberOfAnswers  269 non-null    int64 
+ 10  DnsResponseCode  269 non-null    int64 
+ 11  DnsOpCode        269 non-null    int64 
+ 12  SensorId         269 non-null    object
+ 13  sus              269 non-null    int64 
+ 14  evil             269 non-null    int64 
+dtypes: int64(5), object(10)
+memory usage: 31.7+ KB
+
+
+🧾 Columns:
+['Timestamp', 'SourceIP', 'DestinationIP', 'DnsQuery', 'DnsAnswer', 'DnsAnswerTTL', 'DnsQueryNames', 'DnsQueryClass', 'DnsQueryType', 'NumberOfAnswers', 'DnsResponseCode', 'DnsOpCode', 'SensorId', 'sus', 'evil']
