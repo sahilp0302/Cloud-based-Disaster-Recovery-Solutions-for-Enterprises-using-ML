@@ -1,5 +1,4 @@
-# DNS Analytics Streamlit App with Enhanced Sidebar
-
+# ──────────────────── IMPORTS & CONFIG ──────────────────── #
 import os
 import streamlit as st
 import pandas as pd
@@ -13,14 +12,12 @@ from sklearn.metrics import confusion_matrix, roc_curve, auc, classification_rep
 from sklearn.exceptions import UndefinedMetricWarning
 from scipy import stats
 import warnings
-import base64
-from PIL import Image 
+from PIL import Image
 
-# Page Configuration
 st.set_page_config(page_title="DNS Analytics Dashboard", page_icon="🛡️", layout="wide")
 warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 
-# Paths
+# ──────────────────── LOAD DATA ──────────────────── #
 DATA_PATH = r"C:\\Users\\Sahil Parab\\.cache\\kagglehub\\datasets\\katehighnam\\beth-dataset\\versions\\3\\labelled_2021may-ip-10-100-1-105-dns.csv"
 image_path = "C:/Users/Sahil Parab/Cloud-based Disaster Recovery Solutions for Enterprises/beth-dataset-downloader/logo.jpg"
 
@@ -32,13 +29,12 @@ def load_data():
 
 df = load_data()
 
-# -------------------- 🎨 ENHANCED UI STYLES --------------------
+# ──────────────────── CUSTOM STYLES ──────────────────── #
 st.markdown("""
 <style>
 [data-testid="stSidebar"] {
     background: rgba(30, 30, 30, 0.55) !important;
     backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
     padding: 2rem 1.5rem 1rem 1.5rem;
@@ -56,7 +52,6 @@ st.markdown("""
 .sidebar-logo:hover {
     transform: scale(1.05);
 }
-
 .sidebar-title {
     font-size: 18px;
     text-align: center;
@@ -65,8 +60,6 @@ st.markdown("""
     margin-bottom: 20px;
     text-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
 }
-
-/* Sidebar Buttons */
 div[data-testid="stSidebar"] button {
     width: 100%;
     text-align: left;
@@ -90,7 +83,7 @@ div[data-testid="stSidebar"] button:focus {
 </style>
 """, unsafe_allow_html=True)
 
-# -------------------- 📊 SIDEBAR --------------------
+# ──────────────────── SIDEBAR NAVIGATION ──────────────────── #
 with st.sidebar:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -98,13 +91,10 @@ with st.sidebar:
             logo = Image.open(image_path)
             st.image(logo, width=80)
         except:
-            st.warning("Logo not found. Please check the path.")
-
+            st.warning("Logo not found.")
     st.markdown("<div class='sidebar-title'>📁 Navigation</div>", unsafe_allow_html=True)
-
     if "current_page" not in st.session_state:
         st.session_state["current_page"] = "Dataset Overview"
-
     nav_items = {
         "Dataset Overview": "📊",
         "Column Summary": "🔢",
@@ -116,25 +106,24 @@ with st.sidebar:
         "Cost Analysis": "💸",
         "Source IP Insights": "🌐"
     }
-
     for label, emoji in nav_items.items():
         if st.button(f"{emoji} {label}", key=label):
             st.session_state["current_page"] = label
 
-# -------------------- 🔰 MAIN TITLE --------------------
+# ──────────────────── HEADER ──────────────────── #
 st.markdown("""
-    <div style="text-align:center; padding: 20px; background: linear-gradient(90deg, #00c6ff, #0072ff); color: white; border-radius: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); animation: fadeInDown 1.2s ease-out;">
-        <h1 style="margin:0;"> 🛡️ Cloud-based Disaster Recovery Solutions for Enterprises Dashboard </h1>
-    </div>
-    <style>
-    @keyframes fadeInDown {
-        0% {opacity: 0; transform: translateY(-30px);}
-        100% {opacity: 1; transform: translateY(0);}
-    }
-    </style>
+<div style="text-align:center; padding: 20px; background: linear-gradient(90deg, #00c6ff, #0072ff); color: white; border-radius: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); animation: fadeInDown 1.2s ease-out;">
+    <h1 style="margin:0;"> 🛡️ Cloud-based Disaster Recovery Solutions for Enterprises Dashboard </h1>
+</div>
+<style>
+@keyframes fadeInDown {
+    0% {opacity: 0; transform: translateY(-30px);}
+    100% {opacity: 1; transform: translateY(0);}
+}
+</style>
 """, unsafe_allow_html=True)
 
-# -------------------- 📄 PAGE LOGIC --------------------
+# ──────────────────── PAGE LOGIC ──────────────────── #
 selected_page = st.session_state["current_page"]
 
 if selected_page == "Dataset Overview":
@@ -145,93 +134,61 @@ elif selected_page == "Column Summary":
     st.subheader("🔢 Column Summary")
     st.write("Summary statistics for each column.")
 
-elif selected_page == "Correlation Heatmap":
-    st.subheader("🔎 Correlation Heatmap")
-    st.write("Correlation heatmap among features.")
-
-elif selected_page == "Feature Normalization":
-    st.subheader("📈 Feature Normalization")
-    st.write("Visualize normalized features.")
-
-elif selected_page == "Model Training":
-    st.subheader("🎯 Model Training")
-    st.write("Train ML model on features.")
-
-elif selected_page == "Evaluation":
-    st.subheader("🧪 Evaluation")
-    st.write("Show confusion matrix, accuracy, precision.")
-
-elif selected_page == "Hypothesis Testing":
-    st.subheader("📊 Hypothesis Testing")
-    st.write("Perform statistical hypothesis testing.")
-
-elif selected_page == "Cost Analysis":
-    st.subheader("💸 Cost Analysis")
-    st.write("Analyze disaster recovery cost estimates.")
-
-elif selected_page == "Source IP Insights":
-    st.subheader("🌐 Source IP Insights")
-    st.write("Show trends and anomalies in Source IPs.")
-
-# ✅ You don’t need to change the logic blocks (tabs, charts, ML) as they are already integrated with this layout.
-
-
-# Additional Summary Tab
+# ──────────────────── COLUMN SUMMARY INSIGHTS ──────────────────── #
 st.markdown("---")
 st.markdown("## 🧾 Column Summary Insights")
-summary_tab = st.expander("Click to View Column-Wise Summary & Visualizations")
+summary_tab = st.expander("Click to View Column-Wise Summary & Visualizations", expanded=False)
 
 with summary_tab:
     st.markdown("### 📋 Dataset Description")
     st.dataframe(df.describe(include='all').transpose(), height=400)
 
-    st.markdown("### 📊 Graphical Summary of Features")
-    for col in df.columns:
-        st.markdown(f"#### 🔹 {col}")
-        chart_type = st.selectbox(
-            f"Choose chart type for {col}:",
-            ("Auto", "Histogram", "Pie Chart", "Bar Chart"),
-            key=f"chart_{col}"
-        )
+    st.markdown("### 🧠 Feature Summaries")
+    cols = df.columns.tolist()
+    num_cols = 2
+    for i in range(0, len(cols), num_cols):
+        subcols = st.columns(num_cols)
+        for j in range(num_cols):
+            if i + j >= len(cols): break
+            col_name = cols[i + j]
+            with subcols[j]:
+                st.markdown(f"**🔹 {col_name}**")
+                chart_type = st.selectbox(f"Chart Type for {col_name}", ("Auto", "Histogram", "Pie Chart", "Bar Chart"), key=f"chart_{col_name}")
+                unique_vals = df[col_name].dropna().unique()
 
-        unique_vals = df[col].dropna().unique()
+                if chart_type == "Auto":
+                    if df[col_name].dtype in ['int64', 'float64']:
+                        chart_type = "Histogram"
+                    elif df[col_name].nunique() <= 10:
+                        chart_type = "Pie Chart"
+                    elif df[col_name].dtype == 'object' or df[col_name].nunique() < 20:
+                        chart_type = "Bar Chart"
+                    else:
+                        st.info("Too many unique values to visualize.")
+                        continue
 
-        if chart_type == "Auto":
-            if df[col].dtype in ['int64', 'float64']:
-                chart_type = "Histogram"
-            elif df[col].nunique() <= 10:
-                chart_type = "Pie Chart"
-            elif df[col].dtype == 'object' or df[col].nunique() < 20:
-                chart_type = "Bar Chart"
-            else:
-                st.info("Too many unique values to visualize effectively.")
-                continue
+                if chart_type == "Histogram":
+                    fig, ax = plt.subplots()
+                    sns.histplot(df[col_name].dropna(), kde=True, ax=ax, color='steelblue')
+                    ax.set_title(f"{col_name} Distribution")
+                    st.pyplot(fig)
 
-        if chart_type == "Histogram":
-            fig, ax = plt.subplots()
-            sns.histplot(df[col].dropna(), kde=True, ax=ax, color='steelblue')
-            ax.set_title(f"Histogram of {col}")
-            st.pyplot(fig)
+                elif chart_type == "Pie Chart" and df[col_name].nunique() <= 10:
+                    fig, ax = plt.subplots()
+                    df[col_name].value_counts().plot.pie(autopct='%1.1f%%', ax=ax)
+                    ax.set_ylabel('')
+                    ax.set_title(f"{col_name} Distribution")
+                    st.pyplot(fig)
 
-        elif chart_type == "Pie Chart" and df[col].nunique() <= 10:
-            fig, ax = plt.subplots()
-            df[col].value_counts().plot.pie(autopct='%1.1f%%', ax=ax)
-            ax.set_ylabel('')
-            ax.set_title(f"Pie Chart of {col}")
-            st.pyplot(fig)
+                elif chart_type == "Bar Chart" and (df[col_name].dtype == 'object' or df[col_name].nunique() < 20):
+                    fig, ax = plt.subplots()
+                    sns.barplot(x=df[col_name].value_counts().values[:10], y=df[col_name].value_counts().index[:10], ax=ax, palette='Blues_d')
+                    ax.set_title(f"{col_name} Top Categories")
+                    st.pyplot(fig)
+                else:
+                    st.info("Incompatible chart type.")
 
-        elif chart_type == "Bar Chart" and (df[col].dtype == 'object' or df[col].nunique() < 20):
-            top_vals = df[col].value_counts().head(10)
-            fig, ax = plt.subplots()
-            sns.barplot(x=top_vals.values, y=top_vals.index, palette='Blues_d', ax=ax)
-            ax.set_title(f"Top Categories in {col}")
-            st.pyplot(fig)
-
-        else:
-            st.info("Selected chart type is not suitable for this column.")
-
-    # Correlation Heatmap
-    st.markdown("### 📌 Correlation Heatmap")
+    st.markdown("### 🔥 Correlation Heatmap")
     numeric_df = df.select_dtypes(include=['int64', 'float64'])
     if not numeric_df.empty:
         fig, ax = plt.subplots(figsize=(12, 6))
@@ -239,20 +196,21 @@ with summary_tab:
         ax.set_title("Correlation Matrix")
         st.pyplot(fig)
 
-    # Scatter Plot Selection
-    st.markdown("### 📈 Scatter Plot Viewer")
+    st.markdown("### 📈 Scatter Plot")
     numeric_columns = numeric_df.columns.tolist()
     if len(numeric_columns) >= 2:
-        x_axis = st.selectbox("Select X-axis:", numeric_columns, key="scatter_x")
-        y_axis = st.selectbox("Select Y-axis:", numeric_columns, index=1, key="scatter_y")
+        x_axis = st.selectbox("X-axis:", numeric_columns, key="scatter_x")
+        y_axis = st.selectbox("Y-axis:", numeric_columns, index=1, key="scatter_y")
         fig, ax = plt.subplots()
         ax.scatter(df[x_axis], df[y_axis], alpha=0.5, color='seagreen')
         ax.set_xlabel(x_axis)
         ax.set_ylabel(y_axis)
-        ax.set_title(f"Scatter Plot: {x_axis} vs {y_axis}")
+        ax.set_title(f"{x_axis} vs {y_axis}")
         st.pyplot(fig)
     else:
-        st.info("Not enough numeric columns to plot scatter plot.")
+        st.info("Not enough numeric columns.")
+
+# Keep your remaining sections (tabs, model, hypothesis testing, cost, etc.) as they are.
 
 
 
